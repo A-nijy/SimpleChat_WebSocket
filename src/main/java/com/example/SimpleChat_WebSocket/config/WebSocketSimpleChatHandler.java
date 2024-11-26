@@ -41,6 +41,7 @@ public class WebSocketSimpleChatHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // Set<세션>에 현재 연결된 사용자 세션을 추가
         sessions.add(session);
+        session.sendMessage(new TextMessage("웹소켓 연결"));
     }
 
     // 소켓 요청(메시지) 처리 메서드 (소켓 연결 이후 메시지를 수신할 때 호출되는 메서드)
@@ -79,6 +80,8 @@ public class WebSocketSimpleChatHandler extends TextWebSocketHandler {
                 roomSessionMap.get(webSocketMessageDto.getRoomNumber())
                         .remove(session);
                 // 방 나가는 메시지 담기
+                webSocketMessageDto.setMessage("사용자가 나갔습니다.");
+                break;
         }
 
         // 데이터(메시지) 전송
@@ -108,3 +111,14 @@ public class WebSocketSimpleChatHandler extends TextWebSocketHandler {
         session.sendMessage(new TextMessage("웹소켓 연결 종료"));
     }
 }
+
+/*
+        위와 같이 TextMessage를 보내면 해당 메시지가 일반 문자열 형식이므로 클라이언트는 JSON이 아니라 Text로 응답을 받는다.
+        만약 JSON으로 보내고 싶다면 해당 메시지 문자열을 JSON 형식으로 전달해야한다.
+        "{\"message\": \"웹소켓 연결\"}"
+        "{\"message\": \"사용자가 입장했습니다.\"}"
+        "{\"message\": \"사용자가 나갔습니다.\"}"
+        "{\"message\": \"웹소켓 연결 종료\"}"
+        하지만 이것은 JSON 형식처럼 생긴 Text이므로
+        클라이언트측에서 JSON으로 파싱하여 JSON형태로 변환하여 받도록 코드를 추가해줘야 한다.
+*/
