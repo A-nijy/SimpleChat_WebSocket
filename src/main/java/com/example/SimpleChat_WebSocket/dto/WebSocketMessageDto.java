@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebSocketMessgeDto {   // 웹소켓 통신에서 주고받을 DTO
+public class WebSocketMessageDto {   // 웹소켓 통신에서 주고받을 DTO
 
     private MessageType type;       // JOIN(입장), LEAVE(나가기), MESSAGE(데이터 전달)
     private Long RoomNumber;        // 특정 유저들과 소통할 방(공간)의 고유 번호
